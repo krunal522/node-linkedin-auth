@@ -155,16 +155,17 @@ exports.handleLinkedInCallback = async (req, res) => {
       },
     });
 
-    console.log('profileee data=>>????????????', profileResponse.data);
-    // Get the profile data from the response
-    const profileData = profileResponse.data;
+    console.log('Profile Data:', profileResponse.data);
 
     // Return the profile data to the frontend
-    res.json(profileData);
+    res.json(profileResponse.data);
     // Or if you want JSON format (good for frontend use):
 
   } catch (error) {
-    console.error("LinkedIn Auth Error:", error.response?.data || error.message);
-    res.status(500).send("LinkedIn authentication failed.");
+    console.error("LinkedIn Auth Error:", error.response?.data || error.message || error);
+    res.status(500).json({
+      error: "LinkedIn authentication failed.",
+      details: error.response?.data || error.message || error
+    });
   }
 };
