@@ -147,25 +147,20 @@ exports.handleLinkedInCallback = async (req, res) => {
     );
 
     const accessToken = tokenResponse.data.access_token;
-    console.log("Access Token:", accessToken);
+    console.log("Access Token:=>>>>>>>>>>>>>>>>>>", accessToken);
 
-    const profileResponse = await axios.get("https://api.linkedin.com/v2/userinfo", {
+    const profileResponse = await axios.get('https://api.linkedin.com/v2/userinfo', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    const profile = profileResponse.data;
+    console.log('profileee data=>>????????????', profileResponse.data);
+    // Get the profile data from the response
+    const profileData = profileResponse.data;
 
-    console.log('ppp=>>>>>>>', profile);
-
-    // ✅ Return as HTML to show in Chrome browser
-    res.send(`
-      <script>
-        const data = ${JSON.stringify(profile)};
-        window.ReactNativeWebView.postMessage(JSON.stringify(data));
-      </script>
-    `);
+    // Return the profile data to the frontend
+    res.json(profileData);
     // Or if you want JSON format (good for frontend use):
 
   } catch (error) {
