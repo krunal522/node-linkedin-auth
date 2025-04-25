@@ -157,14 +157,16 @@ exports.handleLinkedInCallback = async (req, res) => {
 
     const profile = profileResponse.data;
 
+    console.log('ppp=>>>>>>>', profile);
+
     // ✅ Return as HTML to show in Chrome browser
     res.send(`
-      <h1>LinkedIn Profile Info</h1>
-      <pre>${JSON.stringify(profile, null, 2)}</pre>
+      <script>
+        const data = ${JSON.stringify(profile)};
+        window.ReactNativeWebView.postMessage(JSON.stringify(data));
+      </script>
     `);
-
     // Or if you want JSON format (good for frontend use):
-    // res.json(profile);
 
   } catch (error) {
     console.error("LinkedIn Auth Error:", error.response?.data || error.message);
