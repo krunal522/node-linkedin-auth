@@ -123,12 +123,58 @@ exports.redirectToLinkedIn = (req, res) => {
 //     res.status(500).json({ error: "LinkedIn authentication failed." });
 //   }
 // };
+// exports.handleLinkedInCallback = async (req, res) => {
+//   const code = req.query.code;
+
+//   console.log('Received code:', code);
+
+//   try {
+//     const params = new URLSearchParams();
+//     params.append("grant_type", "authorization_code");
+//     params.append("code", code);
+//     params.append("redirect_uri", LINKEDIN_REDIRECT_URI);
+//     params.append("client_id", LINKEDIN_CLIENT_ID);
+//     params.append("client_secret", LINKEDIN_CLIENT_SECRET);
+
+//     const tokenResponse = await axios.post(
+//       "https://www.linkedin.com/oauth/v2/accessToken",
+//       params,
+//       {
+//         headers: {
+//           "Content-Type": "application/x-www-form-urlencoded",
+//         },
+//       }
+//     );
+
+//     const accessToken = tokenResponse.data.access_token;
+//     console.log("Access Token:=>>>>>>>>>>>>>>>>>>", accessToken);
+
+//     const profileResponse = await axios.get('https://api.linkedin.com/v2/userinfo', {
+//       headers: {
+//         Authorization: `Bearer ${accessToken}`,
+//       },
+//     });
+
+//     console.log('Profile Data:', profileResponse.data);
+
+//     // Return the profile data to the frontend
+//     res.json(profileResponse.data);
+//     // Or if you want JSON format (good for frontend use):
+
+//   } catch (error) {
+//     console.error("LinkedIn Auth Error:", error.response?.data || error.message || error);
+//     res.status(500).json({
+//       error: "LinkedIn authentication failed.",
+//       details: error.response?.data || error.message || error
+//     });
+//   }
+// };
 exports.handleLinkedInCallback = async (req, res) => {
   const code = req.query.code;
-
-  console.log('Received code:', code);
+  console.log("Received code:", code);
 
   try {
+    // Step 3: Exchange code for access token
     const params = new URLSearchParams();
     params.append("grant_type", "authorization_code");
     params.append("code", code);
@@ -136,36 +182,39 @@ exports.handleLinkedInCallback = async (req, res) => {
     params.append("client_id", LINKEDIN_CLIENT_ID);
     params.append("client_secret", LINKEDIN_CLIENT_SECRET);
 
-    const tokenResponse = await axios.post(
-      "https://www.linkedin.com/oauth/v2/accessToken",
-      params,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
-
-    const accessToken = tokenResponse.data.access_token;
-    console.log("Access Token:=>>>>>>>>>>>>>>>>>>", accessToken);
-
-    const profileResponse = await axios.get('https://api.linkedin.com/v2/userinfo', {
+    const tokenRes = await axios.post("https://www.linkedin.com/oauth/v2/accessToken", params, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
 
-    console.log('Profile Data:', profileResponse.data);
+    const accessToken = tokenRes.data.access_token;
+    console.log("Access Token:", accessToken);
 
-    // Return the profile data to the frontend
-    res.json(profileResponse.data);
-    // Or if you want JSON format (good for frontend use):
+    // Step 4: Fetch user profile with email and picture
+    const profileRes = await axios.get("https://api.linkedin.com/v2/userinfo", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
+    // Step 5: Build user data
+    const userData = {
+      id: profileRes.data.sub,
+      firstName: profileRes.data.given_name || "",
+      lastName: profileRes.data.family_name || "",
+      name: profileRes.data.name || "",
+      email: profileRes.data.email || "",
+      emailVerified: profileRes.data.email_verified || false,
+      picture: profileRes.data.picture || "",
+      locale: profileRes.data.locale || "",
+    };
+
+    console.log("User Data:=>>>>>>>>>>>", userData);
+    res.json(userData);
   } catch (error) {
-    console.error("LinkedIn Auth Error:", error.response?.data || error.message || error);
+    console.error("LinkedIn Auth Error:", error.response?.data || error.message);
     res.status(500).json({
       error: "LinkedIn authentication failed.",
-      details: error.response?.data || error.message || error
+      details: error.response?.data || error.message,
     });
   }
 };
