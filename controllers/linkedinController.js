@@ -187,7 +187,7 @@ exports.handleLinkedInCallback = async (req, res) => {
     params.append("client_secret", LINKEDIN_CLIENT_SECRET);
 
     const tokenRes = await axios.post("https://www.linkedin.com/oauth/v2/accessToken", params, {
-      header: {
+      headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
@@ -197,7 +197,7 @@ exports.handleLinkedInCallback = async (req, res) => {
 
     // Step 4: Fetch user profile with email and picture
     const profileRes = await axios.get("https://api.linkedin.com/v2/userinfo", {
-      header: { Authorization: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
 
     // Step 5: Build user data
