@@ -173,6 +173,10 @@ exports.handleLinkedInCallback = async (req, res) => {
   const code = req.query.code;
   console.log("Received code:", code);
 
+  if (!code) {
+    return res.status(400).json({ error: "Authorization code not found" });
+  }
+
   try {
     // Step 3: Exchange code for access token
     const params = new URLSearchParams();
