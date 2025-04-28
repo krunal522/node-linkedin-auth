@@ -13,8 +13,8 @@ exports.redirectToLinkedIn = (req, res) => {
 };
 
 exports.handleLinkedInCallback = async (req, res) => {
-  const code = req.body.code; 
-  
+  const { code } = req.query;
+
   console.log("Received Authorization Code:", code);
 
   if (!code) {
@@ -22,7 +22,7 @@ exports.handleLinkedInCallback = async (req, res) => {
   }
 
   try {
-    // Step 3: Exchange code for access token
+    // Step 3: Exchange code for access token 
     const params = new URLSearchParams();
     params.append("grant_type", "authorization_code");
     params.append("code", code);
