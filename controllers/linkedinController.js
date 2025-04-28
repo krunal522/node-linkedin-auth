@@ -13,7 +13,8 @@ exports.redirectToLinkedIn = (req, res) => {
 };
 
 exports.handleLinkedInCallback = async (req, res) => {
-  const { code } = req.query;
+  // const { code } = req.query;
+  const code = req.query.code;
 
   console.log("Received Authorization Code:", code);
 
