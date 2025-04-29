@@ -58,7 +58,7 @@ exports.handleLinkedInCallback = async (req, res) => {
     // };
 
     console.log("access token complete", accessToken);
-    res.json(accessToken);
+    res.json({ accessToken });
   } catch (error) {
     console.error("LinkedIn Auth Error:", error.response?.data || error.message);
     res.status(500).json({
