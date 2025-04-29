@@ -38,27 +38,27 @@ exports.handleLinkedInCallback = async (req, res) => {
     });
 
     const accessToken = tokenRes.data.access_token;
-    console.log("Access Token:", accessToken);
+    // console.log("Access Token:", accessToken);
 
-    // Step 4: Fetch user profile with email and picture
-    const profileRes = await axios.get("https://api.linkedin.com/v2/userinfo", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    // // Step 4: Fetch user profile with email and picture
+    // const profileRes = await axios.get("https://api.linkedin.com/v2/userinfo", {
+    //   headers: { Authorization: `Bearer ${accessToken}` },
+    // });
 
     // Step 5: Build user data
-    const userData = {
-      id: profileRes.data.sub,
-      firstName: profileRes.data.given_name || "",
-      lastName: profileRes.data.family_name || "",
-      name: profileRes.data.name || "",
-      email: profileRes.data.email || "",
-      emailVerified: profileRes.data.email_verified || false,
-      picture: profileRes.data.picture || "",
-      locale: profileRes.data.locale || "",
-    };
+    // const userData = {
+    //   id: profileRes.data.sub,
+    //   firstName: profileRes.data.given_name || "",
+    //   lastName: profileRes.data.family_name || "",
+    //   name: profileRes.data.name || "",
+    //   email: profileRes.data.email || "",
+    //   emailVerified: profileRes.data.email_verified || false,
+    //   picture: profileRes.data.picture || "",
+    //   locale: profileRes.data.locale || "",
+    // };
 
-    console.log("User Data:=>>>>>>>>>>>", userData);
-    res.json(userData);
+    console.log("access token complete", accessToken);
+    res.json(accessToken);
   } catch (error) {
     console.error("LinkedIn Auth Error:", error.response?.data || error.message);
     res.status(500).json({
