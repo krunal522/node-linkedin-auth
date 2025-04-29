@@ -29,7 +29,7 @@ exports.handleLinkedInCallback = async (req, res) => {
     const params = new URLSearchParams();
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "https%3A%2F%2Fnode-linkedin-auth.onrender.com%2Fapi%2Fauth%2Flinkedin%2Fcallback");
+    params.append("redirect_uri", "https://node-linkedin-auth.onrender.com/api/auth/linkedin/callback");
     params.append("client_id", LINKEDIN_CLIENT_ID);
     params.append("client_secret", LINKEDIN_CLIENT_SECRET);
 
