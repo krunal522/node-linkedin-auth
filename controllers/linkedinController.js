@@ -6,7 +6,7 @@ const {
 } = require("./config/linkedinConfig");
 
 exports.redirectToLinkedIn = (req, res) => {
-  const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=https%3A%2F%2Fnode-linkedin-auth.onrender.com%2Fapi%2Fauth%2Flinkedin%2Fcallback&scope=openid+profile+w_member_social+email&scope=openid+profile+w_member_social+email`;
+  const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${LINKEDIN_CLIENT_ID}&redirect_uri=https%3A%2F%2Fnode-linkedin-auth.onrender.com%2Fapi%2Fauth%2Flinkedin%2Fcallback&scope=openid+profile+w_member_social+email`;
 
   console.log("Redirecting to:", linkedinAuthUrl); // Optional debug log
   res.redirect(linkedinAuthUrl);
