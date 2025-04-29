@@ -31,7 +31,7 @@ exports.handleLinkedInCallback = async (req, res) => {
     params.append("client_id", LINKEDIN_CLIENT_ID);
     params.append("client_secret", LINKEDIN_CLIENT_SECRET);
 
-    const tokenRes = await axios.post("https://www.linkedin.com/oauth/v2/accessToken",  params.toString(), {
+    const tokenRes = await axios.post("https://www.linkedin.com/oauth/v2/accessToken", params.toString(), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -58,7 +58,7 @@ exports.handleLinkedInCallback = async (req, res) => {
     // };
 
     console.log("access token complete", accessToken);
-    res.json({ accessToken });
+    res.json({ token: accessToken });
   } catch (error) {
     console.error("LinkedIn Auth Error:", error.response?.data || error.message);
     res.status(500).json({
