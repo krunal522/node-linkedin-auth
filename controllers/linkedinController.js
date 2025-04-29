@@ -27,11 +27,11 @@ exports.handleLinkedInCallback = async (req, res) => {
     const params = new URLSearchParams();
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", LINKEDIN_REDIRECT_URI);
+    params.append("redirect_uri", "https://node-linkedin-auth.onrender.com/api/auth/linkedin/callback");
     params.append("client_id", LINKEDIN_CLIENT_ID);
     params.append("client_secret", LINKEDIN_CLIENT_SECRET);
 
-    const tokenRes = await axios.post("https://www.linkedin.com/oauth/v2/accessToken", params, {
+    const tokenRes = await axios.post("https://www.linkedin.com/oauth/v2/accessToken",  params.toString(), {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
